@@ -1,56 +1,3 @@
-const items = [
-  {
-      id: "001-beetroot",
-      name: "beetroot",
-      price: 1.80
-  },
-  {
-      id: "002-carrot",
-      name: "carrot",
-      price: 0.40
-  },
-  {
-      id: "003-apple",
-      name: "apple",
-      price: 0.62
-  },
-  {
-      id: "004-apricot",
-      name: "apricot",
-      price: 1.75
-  },
-  {
-      id: "005-avocado",
-      name: "avocado",
-      price: 0.75
-  },
-  {
-      id: "006-bananas",
-      name: "bananas",
-      price: 0.64
-  },
-  {
-      id: "007-bell-pepper",
-      name: "bell-pepper",
-      price: 0.45
-  },
-  {
-      id: "008-berry",
-      name: "berry",
-      price: 2.00
-  },
-  {
-      id: "009-blueberry",
-      name: "blueberry",
-      price: 2.00
-  },
-  {
-      id: "010-eggplant",
-      name: "eggplant",
-      price: 0.69
-  }
-];
-
 function buildState () {
   for (i = 0; i < items.length; i++) {
     let qty = {'qty': 0};
@@ -94,9 +41,9 @@ function createItemButton () {
 }
 
 function assignNumericalId(a) {
-  let itemId = state[a].id
+  let itemId = state[a].id;
   itemId = itemId.replace(/\D/g,'');
-  return itemId
+  return itemId;
 }
 
 function createStore (item) {
@@ -110,7 +57,7 @@ function createStore (item) {
   appendToParent (listItemImage, DivImageContainer);
 
   const cartButton = createItemButton();
-  cartButton.id = assignNumericalId(item)
+  cartButton.id = assignNumericalId(item);
   appendToParent (cartButton, listItem);
 }
 
@@ -126,10 +73,10 @@ function createItemName(a) {
 
 function createButtonMinus(a) {
   const buttonMinus = createNewElement('button');
-  buttonMinus.id = assignNumericalId(a)
+  buttonMinus.id = assignNumericalId(a);
   buttonMinus.className = 'quantity-btn remove-btn center';
   buttonMinus.innerText = '-';
-  return buttonMinus
+  return buttonMinus;
 }
 
 function createItemQty(a) {
@@ -153,9 +100,9 @@ function cartTotal() {
     let lineTotal = state[i].qty*state[i].price;
     runningTotal = runningTotal+lineTotal;
     }
-  let cartTotal = runningTotal.toFixed(2);
-  const price = document.querySelector('.total-number');
-  price.innerText = '£'+cartTotal;
+    let cartTotal = runningTotal.toFixed(2);
+    const cost = document.querySelector('.total-number');
+    cost.innerText = '£'+cartTotal;
   }
 
 function updateCart(item) {
@@ -187,7 +134,7 @@ function generateNewcart() {
   for (i = 0; i < state.length; i++) {
   updateCart(i);
   }
-  cartTotal()
+  cartTotal();
 }
 
 const storeItemClick = document.querySelector('.store--item-list');

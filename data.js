@@ -1,4 +1,3 @@
-/*
 const items = [
     {
         id: "001-beetroot",
@@ -61,4 +60,3 @@ const items = [
         image: "assets/icons/010-eggplant.svg"
     }
   ];
-  */
