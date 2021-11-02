@@ -2,66 +2,54 @@ const items = [
   {
       id: "001-beetroot",
       name: "beetroot",
-      price: 1.80,
-      image: "assets/icons/001-beetroot.svg"
+      price: 1.80
   },
   {
       id: "002-carrot",
       name: "carrot",
-      price: 0.40,
-      image: "assets/icons/002-carrot.svg"
+      price: 0.40
   },
   {
       id: "003-apple",
       name: "apple",
-      price: 0.62,
-      image: "assets/icons/003-apple.svg"
+      price: 0.62
   },
   {
       id: "004-apricot",
       name: "apricot",
-      price: 1.75,
-      image: "assets/icons/004-apricot.svg"
+      price: 1.75
   },
   {
       id: "005-avocado",
       name: "avocado",
-      price: 0.75,
-      image: "assets/icons/005-avocado.svg"
+      price: 0.75
   },
   {
       id: "006-bananas",
       name: "bananas",
-      price: 0.64,
-      image: "assets/icons/006-bananas.svg"
+      price: 0.64
   },
   {
       id: "007-bell-pepper",
       name: "bell-pepper",
-      price: 0.45,
-      image: "assets/icons/007-bell-pepper.svg"
+      price: 0.45
   },
   {
       id: "008-berry",
       name: "berry",
-      price: 2.00,
-      image: "assets/icons/008-berry.svg"
+      price: 2.00
   },
   {
       id: "009-blueberry",
       name: "blueberry",
-      price: 2.00,
-      image: "assets/icons/009-blueberry.svg"
+      price: 2.00
   },
   {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.69,
-      image: "assets/icons/010-eggplant.svg"
+      price: 0.69
   }
 ];
-
-//initialise state
 
 function buildState () {
   for (i = 0; i < items.length; i++) {
@@ -71,11 +59,8 @@ function buildState () {
   return state;
 }
 
-var state = []
+let state = []
 state = buildState();
-console.log (state);
-
-//define variables & functions to create new HTML elements
 
 const storeItems = document.querySelector('.store--item-list');
 const cartItems = document.querySelector('.cart--item-list');
@@ -89,18 +74,16 @@ function appendToParent(element, parentElement) {
   return parentElement.append(element);
 }
 
-//store
-
 function createDivImageContainer () {
   const divImgContainer = createNewElement('div');
   divImgContainer.className = 'store--item-icon';
   return divImgContainer;
 }
 
-function createCartItemImage(a) {
+function createItemImage(a) {
   const itemImage = createNewElement('img');
-  itemImage.setAttribute("src", items[a].image );
-  itemImage.setAttribute("alt", items[a].name );
+  itemImage.setAttribute("src", `assets/icons/${items[a].id}.svg`);
+  itemImage.setAttribute("alt", items[a].name);
   return itemImage;
 }
 
@@ -110,6 +93,12 @@ function createItemButton () {
   return itemButton;
 }
 
+function assignNumericalId(a) {
+  let itemId = state[a].id
+  itemId = itemId.replace(/\D/g,'');
+  return itemId
+}
+
 function createStore (item) {
   const listItem = createNewElement('li');
   appendToParent (listItem, storeItems);
@@ -117,44 +106,27 @@ function createStore (item) {
   const DivImageContainer = createDivImageContainer ();
   appendToParent (DivImageContainer, listItem);
 
-  const listItemImage = createCartItemImage(item);
+  const listItemImage = createItemImage(item);
   appendToParent (listItemImage, DivImageContainer);
 
   const cartButton = createItemButton();
-  let cartButtonItemId = items[item].id
-  cartButtonItemId = cartButtonItemId.replace(/\D/g,'');
-  cartButton.id = cartButtonItemId
+  cartButton.id = assignNumericalId(item)
   appendToParent (cartButton, listItem);
 }
-
-//initialise store
 
   for (i = 0; i < items.length; i++) {
     createStore(i);
   }
 
-//cart
-
-function createItemImage(a) {
-  const itemImage = createNewElement('img');
-  itemImage.setAttribute("src", state[a].image );
-  itemImage.setAttribute("alt", state[a].name );
-  itemImage.className = "cart--item-icon";
-  return itemImage;
-}
-
 function createItemName(a) {
   const itemName = createNewElement('p');
   itemName.innerText = state[a].name;
-  console.log (state[a])
   return itemName;
 }
 
 function createButtonMinus(a) {
   const buttonMinus = createNewElement('button');
-  let createbuttonMinusId = state[a].id
-  createbuttonMinusId = createbuttonMinusId.replace(/\D/g,'');
-  buttonMinus.id = createbuttonMinusId
+  buttonMinus.id = assignNumericalId(a)
   buttonMinus.className = 'quantity-btn remove-btn center';
   buttonMinus.innerText = '-';
   return buttonMinus
@@ -163,44 +135,37 @@ function createButtonMinus(a) {
 function createItemQty(a) {
   const itemQty = createNewElement('span');
   itemQty.className = 'quantity-text center';
-  itemQty.innerText = state[a].qty
+  itemQty.innerText = state[a].qty;
   return itemQty;
 }
 
 function createButtonPlus(a) {
   const buttonPlus = createNewElement('button');  
-  let createButtonPlusId = state[a].id
-  createButtonPlusId = createButtonPlusId.replace(/\D/g,'');
-  buttonPlus.id = createButtonPlusId
+  buttonPlus.id = assignNumericalId(a);
   buttonPlus.className = 'quantity-btn add-btn center';
   buttonPlus.innerText = '+';
   return buttonPlus;
 }
 
-// calculate cost of items in cart
-
-function price() {
-  runningTotal=0;
-  for (i = 0; i < state.length; i++) {
-  let lineTotal = state[i].qty*state[i].price;
-  runningTotal = runningTotal+lineTotal
-  }
-  let cartTotal = 0
-  cartTotal = runningTotal.toFixed(2)
-  const price = document.querySelector('.total-number')
-  price.innerText = '£'+cartTotal
+function cartTotal() {
+  let runningTotal = 0;
+    for (i = 0; i < state.length; i++) {
+    let lineTotal = state[i].qty*state[i].price;
+    runningTotal = runningTotal+lineTotal;
+    }
+  let cartTotal = runningTotal.toFixed(2);
+  const price = document.querySelector('.total-number');
+  price.innerText = '£'+cartTotal;
   }
 
-// create cart
-
-function updateCart (item) {
+function updateCart(item) {
   if (state[item].qty > 0) {
     const listItem = createNewElement('li');
-    listItem.className = state[item].id
-    console.log(listItem.classList)
+    listItem.className = state[item].id;
     appendToParent (listItem, cartItems);
 
     const listItemImage = createItemImage(item);
+    listItemImage.className = "cart--item-icon";
     appendToParent (listItemImage, listItem);
 
     const listItemName = createItemName(item);
@@ -217,7 +182,13 @@ function updateCart (item) {
   }
 }
 
-//event listeners - store
+function generateNewcart() {
+  cartItems.innerHTML = '';
+  for (i = 0; i < state.length; i++) {
+  updateCart(i);
+  }
+  cartTotal()
+}
 
 const storeItemClick = document.querySelector('.store--item-list');
 storeItemClick.addEventListener("click", function (event) {
@@ -225,14 +196,8 @@ storeItemClick.addEventListener("click", function (event) {
   let button = event.target.closest('button');
   if (!button) return;
   state[newId].qty ++;
-  cartItems.innerHTML = '';
-  for (i = 0; i < state.length; i++) {
-  updateCart(i);
-  }
-  price()
+  generateNewcart();
 })
-
-//event listeners - cart
 
 const cartItemClick = document.querySelector('.cart--item-list');
 cartItemClick.addEventListener("click", function (event) {
@@ -240,19 +205,6 @@ cartItemClick.addEventListener("click", function (event) {
   let buttonPlus = event.target.closest('.add-btn');
   let buttonMinus = event.target.closest('.remove-btn');
   if (!buttonPlus && !buttonMinus) return;
-  if (!buttonPlus) {
-    state[newId].qty --;
-    cartItems.innerHTML = '';
-    for (i = 0; i < state.length; i++) {
-    updateCart(i);
-    }
-    price()
-  } else {
-    state[newId].qty ++;
-    cartItems.innerHTML = '';
-    for (i = 0; i < state.length; i++) {
-    updateCart(i);
-    }
-    price()
-  }
+  (buttonPlus ? state[newId].qty ++ : state[newId].qty --);
+  generateNewcart();
 })
