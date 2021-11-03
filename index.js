@@ -167,7 +167,7 @@ function createNewFormOption (value, text) {
   const optionname = createNewElement('option');
   optionname.value = value;
   optionname.innerText = text;
-  return optionname
+  return optionname;
 }
 
 //challenge 1 - form
@@ -178,13 +178,13 @@ function generateForm() {
   header.insertBefore(form, storeItems);
   const select = createNewElement('select');
   appendToParent (select, form);
-  const defaultOption = createNewFormOption ('', 'Filter By ...')
+  const defaultOption = createNewFormOption ('', 'Filter By ...');
   appendToParent (defaultOption, select);
-  const option = createNewFormOption ('all', 'All items')
+  const option = createNewFormOption ('all', 'All items');
   appendToParent (option, select);
-  const option2 = createNewFormOption ('fruit', 'Fruits')
+  const option2 = createNewFormOption ('fruit', 'Fruits');
   appendToParent (option2, select);
-  const option3 = createNewFormOption ('vegetable', 'Vegetables')
+  const option3 = createNewFormOption ('vegetable', 'Vegetables');
   appendToParent (option3, select);
 }
 
@@ -217,7 +217,6 @@ const formClick = document.querySelector('.form');
 formClick.addEventListener('change', function(event) {
     event.preventDefault();
     let value = event.target.value;
-    console.log(value)
     if (value === 'fruit') initStore('fruit');
     if (value === 'vegetable') initStore('vegetable');
     if (value === 'all') initStore('all');
