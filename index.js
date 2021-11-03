@@ -1,6 +1,7 @@
 let state = []
 const storeItems = document.querySelector('.store--item-list');
 const cartItems = document.querySelector('.cart--item-list');
+const header = document.querySelector('#store')
 
 //setup state array  = data array with item qtys
 
@@ -73,9 +74,12 @@ function createStore (item) {
   appendToParent (cartButton, listItem);
 }
 
-function initStore() {
+function initStore(value) {
+  storeItems.innerHTML = '';
   for (i = 0; i < state.length; i++) {
+    if (state[i].type === value || value === 'all') {
     createStore(i);
+    }
   }
 }
 
@@ -157,10 +161,38 @@ function generateNewcart() {
   cartTotal();
 }
 
-//initialise state array and store items on first page load
+//form specific functions
 
-initState()
-initStore()
+function createNewFormOption (value, text) {
+  const optionname = createNewElement('option');
+  optionname.value = value;
+  optionname.innerText = text;
+  return optionname
+}
+
+//challenge 1 - form
+
+function generateForm() {
+  const form = createNewElement('form');
+  form.className = ('form');
+  header.insertBefore(form, storeItems);
+  const select = createNewElement('select');
+  appendToParent (select, form);
+  const defaultOption = createNewFormOption ('', 'Filter By ...')
+  appendToParent (defaultOption, select);
+  const option = createNewFormOption ('all', 'All items')
+  appendToParent (option, select);
+  const option2 = createNewFormOption ('fruit', 'Fruits')
+  appendToParent (option2, select);
+  const option3 = createNewFormOption ('vegetable', 'Vegetables')
+  appendToParent (option3, select);
+}
+
+//initialise state array, form and store items on first page load
+
+initState();
+generateForm();
+initStore('all');
 
 //eventListeners
 
@@ -179,4 +211,14 @@ cartItems.addEventListener("click", function (event) {
   if (!buttonPlus && !buttonMinus) return;
   (buttonPlus ? state[newId].qty ++ : state[newId].qty --);
   generateNewcart();
+})
+
+const formClick = document.querySelector('.form');
+formClick.addEventListener('change', function(event) {
+    event.preventDefault();
+    let value = event.target.value;
+    console.log(value)
+    if (value === 'fruit') initStore('fruit');
+    if (value === 'vegetable') initStore('vegetable');
+    if (value === 'all') initStore('all');
 })
