@@ -164,8 +164,7 @@ initStore()
 
 //eventListeners
 
-const storeItemClick = document.querySelector('.store--item-list');
-storeItemClick.addEventListener("click", function (event) {
+storeItems.addEventListener("click", function (event) {
   let newId = Number(event.target.id - 1);
   let button = event.target.closest('button');
   if (!button) return;
@@ -173,8 +172,7 @@ storeItemClick.addEventListener("click", function (event) {
   generateNewcart();
 })
 
-const cartItemClick = document.querySelector('.cart--item-list');
-cartItemClick.addEventListener("click", function (event) {
+cartItems.addEventListener("click", function (event) {
   let newId = Number(event.target.id - 1);
   let buttonPlus = event.target.closest('.add-btn');
   let buttonMinus = event.target.closest('.remove-btn');
