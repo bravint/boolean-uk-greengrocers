@@ -1,3 +1,9 @@
+let state = []
+const storeItems = document.querySelector('.store--item-list');
+const cartItems = document.querySelector('.cart--item-list');
+
+//setup state array  = data array with item qtys
+
 function buildState () {
   for (i = 0; i < items.length; i++) {
     let qty = {'qty': 0};
@@ -6,11 +12,11 @@ function buildState () {
   return state;
 }
 
-let state = []
-state = buildState();
+function initState () {
+  state = buildState();
+}
 
-const storeItems = document.querySelector('.store--item-list');
-const cartItems = document.querySelector('.cart--item-list');
+//create HTML elements
 
 function createNewElement(element = '') {
   const newElement = document.createElement(element);
@@ -20,6 +26,16 @@ function createNewElement(element = '') {
 function appendToParent(element, parentElement) {
   return parentElement.append(element);
 }
+
+//remove non-numerical elements from item-id in state array
+
+function assignNumericalId(a) {
+  let itemId = state[a].id;
+  itemId = itemId.replace(/\D/g,'');
+  return itemId;
+}
+
+//store specific functions
 
 function createDivImageContainer () {
   const divImgContainer = createNewElement('div');
@@ -40,11 +56,7 @@ function createItemButton () {
   return itemButton;
 }
 
-function assignNumericalId(a) {
-  let itemId = state[a].id;
-  itemId = itemId.replace(/\D/g,'');
-  return itemId;
-}
+//build store HTML elements
 
 function createStore (item) {
   const listItem = createNewElement('li');
@@ -61,9 +73,13 @@ function createStore (item) {
   appendToParent (cartButton, listItem);
 }
 
-  for (i = 0; i < items.length; i++) {
+function initStore() {
+  for (i = 0; i < state.length; i++) {
     createStore(i);
   }
+}
+
+//cart specific functions
 
 function createItemName(a) {
   const itemName = createNewElement('p');
@@ -94,16 +110,7 @@ function createButtonPlus(a) {
   return buttonPlus;
 }
 
-function cartTotal() {
-  let runningTotal = 0;
-    for (i = 0; i < state.length; i++) {
-    let lineTotal = state[i].qty*state[i].price;
-    runningTotal = runningTotal+lineTotal;
-    }
-    let cartTotal = runningTotal.toFixed(2);
-    const cost = document.querySelector('.total-number');
-    cost.innerText = '£'+cartTotal;
-  }
+//build cart HTML elements
 
 function updateCart(item) {
   if (state[item].qty > 0) {
@@ -129,6 +136,19 @@ function updateCart(item) {
   }
 }
 
+//calculate cost of items
+
+function cartTotal() {
+  let runningTotal = 0;
+    for (i = 0; i < state.length; i++) {
+    let lineTotal = state[i].qty*state[i].price;
+    runningTotal = runningTotal+lineTotal;
+    }
+    let cartTotal = runningTotal.toFixed(2);
+    const cost = document.querySelector('.total-number');
+    cost.innerText = '£'+cartTotal;
+  }
+
 function generateNewcart() {
   cartItems.innerHTML = '';
   for (i = 0; i < state.length; i++) {
@@ -136,6 +156,13 @@ function generateNewcart() {
   }
   cartTotal();
 }
+
+//initialise state array and store items on first page load
+
+initState()
+initStore()
+
+//eventListeners
 
 const storeItemClick = document.querySelector('.store--item-list');
 storeItemClick.addEventListener("click", function (event) {
